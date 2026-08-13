@@ -43,18 +43,18 @@ function spawnPetals() {
 const CONFETTI_COLORS = ['#C8294A', '#D4943A', '#F0C060', '#F9DDB8', '#FCE4E8', '#fff'];
 
 function launchConfetti(colors, originX, originY) {
-  const cols = colors || CONFETTI_COLORS;
-  const ox = originX != null ? originX : null;
-  const oy = originY != null ? originY : null;
+  const cols = (Array.isArray(colors) && colors.length > 0) ? colors : CONFETTI_COLORS;
+  const ox = (typeof originX === 'number') ? originX : null;
+  const oy = (typeof originY === 'number') ? originY : null;
   for (let i = 0; i < 90; i++) {
     const el = document.createElement('div');
     el.className = 'confetti-piece';
     el.style.left = ox != null
-      ? (ox + (Math.random() - 0.5) * 60) + 'px'
+      ? (ox + (Math.random() - 0.5) * 80) + 'px'
       : Math.random() * 100 + 'vw';
     el.style.top  = oy != null ? oy + 'px' : '-10px';
     el.style.background = cols[Math.floor(Math.random() * cols.length)];
-    el.style.animationDelay    = (Math.random() * 0.6) + 's';
+    el.style.animationDelay    = (Math.random() * 0.5) + 's';
     el.style.animationDuration = (1.0 + Math.random() * 1.4) + 's';
     el.style.width  = (5 + Math.random() * 9) + 'px';
     el.style.height = (5 + Math.random() * 9) + 'px';
@@ -66,7 +66,7 @@ function launchConfetti(colors, originX, originY) {
 
 /* ───────────────────────────────────
    🥚 EASTER EGGS — Hidden Love Bombs
-   7 secret spots, each one unique
+   10 secret spots, each one unique
 ─────────────────────────────────── */
 const EGGS = [
   {
@@ -84,6 +84,14 @@ const EGGS = [
     body: 'Across every star and galaxy.\nYou are my favorite sky.',
     colors: ['#F0C060','#D4943A','#fff','#FDE9C3'],
     style: 'gold',
+  },
+  {
+    id: 'egg-daisy',
+    emoji: '🌼',
+    heading: 'I love you.',
+    body: 'In all your quiet, beautiful ways.',
+    colors: ['#F0C060','#F9DDB8','#fff'],
+    style: 'warm',
   },
   {
     id: 'egg-forever',
@@ -154,19 +162,19 @@ const EGGS = [
 let activeEgg = null;
 
 function showEgg(eggId, originEl) {
-  if (activeEgg) return; // only one at a time
+  if (activeEgg) return; // only one active popup at a time
   const egg = EGGS.find(e => e.id === eggId);
   if (!egg) return;
 
   // Confetti burst from element position
-  if (originEl) {
+  if (originEl && originEl.getBoundingClientRect) {
     const r = originEl.getBoundingClientRect();
     launchConfetti(egg.colors, r.left + r.width / 2, r.top + r.height / 2);
   } else {
     launchConfetti(egg.colors);
   }
 
-  // Build toast
+  // Build toast dialog
   const toast = document.createElement('div');
   toast.className = `egg-toast egg-${egg.style}`;
   toast.setAttribute('role', 'dialog');
@@ -184,30 +192,57 @@ function showEgg(eggId, originEl) {
   document.body.appendChild(toast);
   activeEgg = toast;
 
-  // Auto-dismiss after 5.5s, or on tap
   const dismiss = () => {
+    if (!activeEgg) return;
+    toast.classList.remove('egg-in');
     toast.classList.add('egg-out');
-    toast.addEventListener('animationend', () => {
-      toast.remove();
+    setTimeout(() => {
+      if (toast.parentNode) toast.parentNode.removeChild(toast);
       activeEgg = null;
-    }, { once: true });
+    }, 320);
   };
 
-  toast.querySelector('.egg-close').addEventListener('click', dismiss);
-  toast.addEventListener('click', e => {
-    if (e.target === toast || e.target.classList.contains('egg-inner')) dismiss();
+  toast.querySelector('.egg-close').addEventListener('click', (e) => {
+    e.stopPropagation();
+    dismiss();
+  });
+  toast.addEventListener('click', (e) => {
+    dismiss();
   });
   setTimeout(dismiss, 5500);
 
-  // Animate in
-  requestAnimationFrame(() => toast.classList.add('egg-in'));
+  // Trigger CSS entry transition
+  requestAnimationFrame(() => {
+    toast.classList.add('egg-in');
+  });
+}
+
+function addEggListener(el, eggId) {
+  if (!el) return;
+  el.style.cursor = 'pointer';
+  el.style.pointerEvents = 'auto';
+
+  let handled = false;
+  const trigger = (e) => {
+    if (handled) return;
+    handled = true;
+    setTimeout(() => { handled = false; }, 400);
+
+    if (e && e.stopPropagation) e.stopPropagation();
+    showEgg(eggId, el);
+  };
+
+  el.addEventListener('click', trigger);
+  el.addEventListener('touchend', (e) => {
+    trigger(e);
+  }, { passive: true });
 }
 
 function initEasterEggs() {
-  // Map element IDs / selectors to egg IDs
   const targets = [
     { selector: '.env-deco-1',      egg: 'egg-flower'   },
     { selector: '.env-deco-2',      egg: 'egg-star'     },
+    { selector: '.env-deco-3',      egg: 'egg-daisy'    },
     { selector: '#lt-forever',      egg: 'egg-forever'  },
     { selector: '.tv-guitar',       egg: 'egg-guitar'   },
     { selector: '.sh-b1',           egg: 'egg-balloon'  },
@@ -219,15 +254,9 @@ function initEasterEggs() {
 
   targets.forEach(({ selector, egg }) => {
     const el = document.querySelector(selector);
-    if (!el) return;
-    el.style.cursor = 'pointer';
-    el.addEventListener('click', e => {
-      e.stopPropagation();
-      showEgg(egg, el);
-    });
+    if (el) addEggListener(el, egg);
   });
 
-  // Polaroid Easter egg — triggered on 3rd card ("favorite nights")
   window._polaroidEggPending = true;
 }
 
@@ -494,7 +523,12 @@ function initEnvelope() {
 ─────────────────────────────────── */
 function initConfetti() {
   const btn = document.getElementById('confetti-btn');
-  if (btn) btn.addEventListener('click', launchConfetti);
+  if (btn) {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      launchConfetti();
+    });
+  }
 }
 
 /* ───────────────────────────────────
