@@ -42,25 +42,196 @@ function spawnPetals() {
 ─────────────────────────────────── */
 const CONFETTI_COLORS = ['#C8294A', '#D4943A', '#F0C060', '#F9DDB8', '#FCE4E8', '#fff'];
 
-function launchConfetti() {
-  for (let i = 0; i < 80; i++) {
+function launchConfetti(colors, originX, originY) {
+  const cols = colors || CONFETTI_COLORS;
+  const ox = originX != null ? originX : null;
+  const oy = originY != null ? originY : null;
+  for (let i = 0; i < 90; i++) {
     const el = document.createElement('div');
     el.className = 'confetti-piece';
-    el.style.left = Math.random() * 100 + 'vw';
-    el.style.top  = '-10px';
-    el.style.background = CONFETTI_COLORS[Math.floor(Math.random() * CONFETTI_COLORS.length)];
-    el.style.animationDelay    = (Math.random() * 0.8) + 's';
-    el.style.animationDuration = (1.2 + Math.random() * 1.2) + 's';
-    el.style.width  = (6 + Math.random() * 8) + 'px';
-    el.style.height = (6 + Math.random() * 8) + 'px';
+    el.style.left = ox != null
+      ? (ox + (Math.random() - 0.5) * 60) + 'px'
+      : Math.random() * 100 + 'vw';
+    el.style.top  = oy != null ? oy + 'px' : '-10px';
+    el.style.background = cols[Math.floor(Math.random() * cols.length)];
+    el.style.animationDelay    = (Math.random() * 0.6) + 's';
+    el.style.animationDuration = (1.0 + Math.random() * 1.4) + 's';
+    el.style.width  = (5 + Math.random() * 9) + 'px';
+    el.style.height = (5 + Math.random() * 9) + 'px';
+    el.style.borderRadius = Math.random() > 0.4 ? '50%' : '2px';
     document.body.appendChild(el);
     el.addEventListener('animationend', () => el.remove());
   }
 }
 
 /* ───────────────────────────────────
-   SLIDE ENGINE
+   🥚 EASTER EGGS — Hidden Love Bombs
+   7 secret spots, each one unique
 ─────────────────────────────────── */
+const EGGS = [
+  {
+    id: 'egg-flower',
+    emoji: '🌸',
+    heading: 'I love you.',
+    body: 'No reason needed.\nJust because you are you.',
+    colors: ['#C8294A','#F9C8D4','#fff','#FADADD'],
+    style: 'rose',
+  },
+  {
+    id: 'egg-star',
+    emoji: '⭐',
+    heading: 'I love you.',
+    body: 'Across every star and galaxy.\nYou are my favorite sky.',
+    colors: ['#F0C060','#D4943A','#fff','#FDE9C3'],
+    style: 'gold',
+  },
+  {
+    id: 'egg-forever',
+    emoji: '💫',
+    heading: 'I love you',
+    body: 'beyond every forever\nthat has ever been written.',
+    colors: ['#D4943A','#F0C060','#fff','#FDE9C3'],
+    style: 'gold',
+  },
+  {
+    id: 'egg-guitar',
+    emoji: '🎵',
+    heading: 'I love you',
+    body: 'in every song,\nin every silence between the notes.',
+    colors: ['#9B1B30','#C8294A','#F9C8D4','#fff'],
+    style: 'dark',
+  },
+  {
+    id: 'egg-balloon',
+    emoji: '🎈',
+    heading: 'I still love you.',
+    body: 'Higher than the clouds,\ndeeper than the sea.',
+    colors: ['#E8657A','#F9DDB8','#fff'],
+    style: 'rose',
+  },
+  {
+    id: 'egg-memories',
+    emoji: '📸',
+    heading: 'I still love you.',
+    body: 'In every photo.\nIn every moment\nwe haven\'t taken yet.',
+    colors: ['#C8294A','#F0C060','#fff','#F9DDB8'],
+    style: 'warm',
+  },
+  {
+    id: 'egg-bear',
+    emoji: '🐻',
+    heading: 'I still love you.',
+    body: 'More than yesterday.\nLess than tomorrow.\nAlways.',
+    colors: ['#D4943A','#C8294A','#FDE9C3','#fff'],
+    style: 'warm',
+  },
+  {
+    id: 'egg-polaroid',
+    emoji: '♾️',
+    heading: 'I still love you.',
+    body: 'You are my safe place,\nmy home,\nmy whole world.',
+    colors: ['#C8294A','#F9C8D4','#D4943A','#fff'],
+    style: 'rose',
+  },
+  {
+    id: 'egg-rose',
+    emoji: '🌹',
+    heading: 'I will always love you.',
+    body: 'In every life.\nIn every world.\nIn every version of forever.\n\nAlways.',
+    colors: ['#9B1B30','#C8294A','#D4943A','#F0C060','#fff'],
+    style: 'grand',
+  },
+  {
+    id: 'egg-star2',
+    emoji: '✨',
+    heading: 'I will always love you.',
+    body: 'Until all the stars run out of light.',
+    colors: ['#F0C060','#D4943A','#fff'],
+    style: 'gold',
+  }
+];
+
+let activeEgg = null;
+
+function showEgg(eggId, originEl) {
+  if (activeEgg) return; // only one at a time
+  const egg = EGGS.find(e => e.id === eggId);
+  if (!egg) return;
+
+  // Confetti burst from element position
+  if (originEl) {
+    const r = originEl.getBoundingClientRect();
+    launchConfetti(egg.colors, r.left + r.width / 2, r.top + r.height / 2);
+  } else {
+    launchConfetti(egg.colors);
+  }
+
+  // Build toast
+  const toast = document.createElement('div');
+  toast.className = `egg-toast egg-${egg.style}`;
+  toast.setAttribute('role', 'dialog');
+  toast.setAttribute('aria-modal', 'true');
+
+  toast.innerHTML = `
+    <div class="egg-inner">
+      <div class="egg-emoji">${egg.emoji}</div>
+      <div class="egg-heading">${egg.heading}</div>
+      <div class="egg-body">${egg.body.replace(/\n/g, '<br>')}</div>
+      <button class="egg-close" aria-label="Close">✕</button>
+    </div>
+  `;
+
+  document.body.appendChild(toast);
+  activeEgg = toast;
+
+  // Auto-dismiss after 5.5s, or on tap
+  const dismiss = () => {
+    toast.classList.add('egg-out');
+    toast.addEventListener('animationend', () => {
+      toast.remove();
+      activeEgg = null;
+    }, { once: true });
+  };
+
+  toast.querySelector('.egg-close').addEventListener('click', dismiss);
+  toast.addEventListener('click', e => {
+    if (e.target === toast || e.target.classList.contains('egg-inner')) dismiss();
+  });
+  setTimeout(dismiss, 5500);
+
+  // Animate in
+  requestAnimationFrame(() => toast.classList.add('egg-in'));
+}
+
+function initEasterEggs() {
+  // Map element IDs / selectors to egg IDs
+  const targets = [
+    { selector: '.env-deco-1',      egg: 'egg-flower'   },
+    { selector: '.env-deco-2',      egg: 'egg-star'     },
+    { selector: '#lt-forever',      egg: 'egg-forever'  },
+    { selector: '.tv-guitar',       egg: 'egg-guitar'   },
+    { selector: '.sh-b1',           egg: 'egg-balloon'  },
+    { selector: '.memories-title',  egg: 'egg-memories' },
+    { selector: '.ear-l',           egg: 'egg-bear'     },
+    { selector: '.fd1',             egg: 'egg-rose'     },
+    { selector: '.fd2',             egg: 'egg-star2'    },
+  ];
+
+  targets.forEach(({ selector, egg }) => {
+    const el = document.querySelector(selector);
+    if (!el) return;
+    el.style.cursor = 'pointer';
+    el.addEventListener('click', e => {
+      e.stopPropagation();
+      showEgg(egg, el);
+    });
+  });
+
+  // Polaroid Easter egg — triggered on 3rd card ("favorite nights")
+  window._polaroidEggPending = true;
+}
+
+
 const SLIDES     = [];
 const DOTS       = [];
 let currentSlide = 0;
@@ -199,7 +370,15 @@ function buildPolaroids() {
     card.appendChild(img);
     card.appendChild(cap);
 
-    // Swipe-away on click
+    // Polaroid Easter egg — on 3rd card ("favorite nights" = index 2)
+    if (i === 2 && window._polaroidEggPending) {
+      card.addEventListener('click', e => {
+        e.stopPropagation();
+        showEgg('egg-polaroid', card);
+      }, { once: true });
+    }
+
+    // Swipe-away on click (keep this after the egg listener)
     card.addEventListener('click', () => swipePolaroid(card));
 
     // Touch swipe on individual card
@@ -354,6 +533,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initConfetti();
   initRestart();
   initKeyboard();
+  initEasterEggs();
 });
 
 // Load YouTube IFrame API for postMessage control
