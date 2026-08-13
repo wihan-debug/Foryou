@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="theme-color" content="#FCE4E8" />
+  <title>For You, My Love 🌹</title>
+  <meta name="description" content="A love letter made just for you." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Lora:ital,wght@0,400;0,500;1,400&family=Nunito:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ===== PETAL PARTICLES ===== -->
+  <div id="petals-container" aria-hidden="true"></div>
+
+  <!-- ===== ENVELOPE OPENER ===== -->
+  <div id="envelope-screen" class="envelope-screen">
+    <div class="env-decorations" aria-hidden="true">
+      <span class="env-deco env-deco-1">🌸</span>
+      <span class="env-deco env-deco-2">⭐</span>
+      <span class="env-deco env-deco-3">🌼</span>
+      <span class="env-deco env-deco-4">💫</span>
+      <span class="env-deco env-deco-5">🌺</span>
+      <span class="env-deco env-deco-6">✨</span>
+    </div>
+
+    <div class="envelope-wrap" id="envelope-wrap">
+      <div class="envelope-obj">
+        <div class="env-flap"></div>
+        <div class="env-body">
+          <div class="env-seal">
+            <span class="env-heart">♥</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="env-text">
+      <p class="env-to">To my Love,</p>
+      <p class="env-hint">tap to open 💌</p>
+    </div>
+
+    <button class="env-open-btn" id="env-open-btn" aria-label="Open the envelope">Open</button>
+  </div>
+
+  <!-- ===== MAIN SLIDES ===== -->
+  <div id="slide-container" class="slide-container" style="display:none;">
+
+    <!-- DOTS NAV -->
+    <div class="slide-dots" id="slide-dots" aria-hidden="true">
+      <span class="dot active" data-slide="0"></span>
+      <span class="dot" data-slide="1"></span>
+      <span class="dot" data-slide="2"></span>
+      <span class="dot" data-slide="3"></span>
+      <span class="dot" data-slide="4"></span>
+    </div>
+
+    <!-- ── SLIDE 0: I Love You Forever ── -->
+    <div class="slide slide-love" id="slide-0" data-bg="scallop">
+      <div class="slide-petals-layer" aria-hidden="true" id="petal-layer-0"></div>
+      <div class="love-content">
+        <h1 class="love-title">
+          <span class="lt-line lt-i">I</span>
+          <span class="lt-line lt-love">Love</span>
+          <span class="lt-line lt-you">You</span>
+          <span class="lt-line lt-forever">Forever</span>
+        </h1>
+      </div>
+      <button class="slide-next-btn" data-next="1">Continue →</button>
+    </div>
+
+    <!-- ── SLIDE 1: If We Had A Soundtrack ── -->
+    <div class="slide slide-soundtrack" id="slide-1" data-bg="dots">
+      <div class="soundtrack-header">
+        <h2 class="soundtrack-title">If We Had A Soundtrack</h2>
+        <div class="soundtrack-hearts" aria-hidden="true">
+          <span class="sh-balloon sh-b1">🎈</span>
+          <span class="sh-balloon sh-b2">🎈</span>
+          <span class="sh-balloon sh-b3">💗</span>
+        </div>
+      </div>
+
+      <div class="tv-wrap">
+        <div class="tv-frame">
+          <div class="tv-screen">
+            <div id="yt-player-wrap">
+              <iframe
+                id="yt-iframe"
+                src="https://www.youtube.com/embed/ERywBkTnrvI?enablejsapi=1&rel=0&modestbranding=1&playsinline=1"
+                title="Orpheus - Vincent Lima"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen>
+              </iframe>
+            </div>
+          </div>
+          <div class="tv-label">Orpheus — Vincent Lima</div>
+          <div class="tv-controls">
+            <button class="tv-btn" id="tv-restart" aria-label="Restart">↺</button>
+            <button class="tv-btn tv-btn-play" id="tv-play" aria-label="Play/Pause">▶</button>
+          </div>
+          <div class="tv-speaker-dots" aria-hidden="true">
+            <span></span><span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span><span></span>
+          </div>
+        </div>
+        <div class="tv-antenna tv-ant-left"></div>
+        <div class="tv-antenna tv-ant-right"></div>
+        <div class="tv-guitar" aria-hidden="true">🪗</div>
+      </div>
+
+      <p class="tv-hint">Tap the buttons to Play/Pause!</p>
+      <button class="slide-next-btn" data-next="2">Continue →</button>
+    </div>
+
+    <!-- ── SLIDE 2: Our Memories ── -->
+    <div class="slide slide-memories" id="slide-2" data-bg="stripe">
+      <h2 class="memories-title">Our Memories</h2>
+      <div class="polaroid-grid" id="polaroid-grid">
+        <!-- injected by JS -->
+      </div>
+      <p class="memories-hint">Swipe photos away ✨</p>
+      <button class="slide-next-btn" data-next="3">Continue →</button>
+    </div>
+
+    <!-- ── SLIDE 3: A Letter For You ── -->
+    <div class="slide slide-letter" id="slide-3" data-bg="scallop2">
+      <div class="letter-header">
+        <h2 class="letter-slide-title">A letter for you...</h2>
+        <div class="letter-ears" aria-hidden="true">
+          <span class="ear ear-l">🐰</span>
+          <span class="ear ear-r">🐰</span>
+        </div>
+      </div>
+
+      <div class="notebook-paper">
+        <div class="notebook-lines" aria-hidden="true">
+          <div class="nb-line"></div><div class="nb-line"></div><div class="nb-line"></div>
+          <div class="nb-line"></div><div class="nb-line"></div><div class="nb-line"></div>
+          <div class="nb-line"></div><div class="nb-line"></div><div class="nb-line"></div>
+          <div class="nb-line"></div><div class="nb-line"></div><div class="nb-line"></div>
+        </div>
+        <div class="letter-text">
+          <p>Maybe I don't always find the perfect words in the moment, so I made this instead. I hope whenever life feels loud or you're questioning yourself, you come back here.</p>
+          <p>I hope you remember that someone loves your quiet side, your messy side, your overthinking side, and every little version in between.</p>
+          <p>You are my red in every sunset, my gold in every golden hour — the colours I see when I close my eyes and think of love. You are every warm thing.</p>
+          <p>If I could give you one thing forever, it'd be the comfort of knowing you'll never have to earn my love. It already chose you.</p>
+          <p class="letter-sign-line">Always yours 🌹</p>
+        </div>
+      </div>
+
+      <button class="slide-next-btn" data-next="4">Continue →</button>
+    </div>
+
+    <!-- ── SLIDE 4: Finale ── -->
+    <div class="slide slide-finale" id="slide-4" data-bg="gingham">
+      <div class="finale-deco" aria-hidden="true">
+        <span class="fd fd1">🌹</span>
+        <span class="fd fd2">⭐</span>
+        <span class="fd fd3">💛</span>
+        <span class="fd fd4">🌸</span>
+        <span class="fd fd5">✨</span>
+      </div>
+
+      <div class="finale-content">
+        <p class="finale-eyebrow">Happy Anniversary, my love</p>
+        <h2 class="finale-main">Here's to us</h2>
+        <p class="finale-sub">Thank you for every moment, every memory, every day you chose me. I love you yesterday, today, and always.</p>
+        <div class="finale-date">18 · August · 2021 → 18 · August · 2026</div>
+        <button class="confetti-btn" id="confetti-btn">🎉 Celebrate!</button>
+        <button class="restart-btn" id="restart-btn">↩ From the beginning</button>
+      </div>
+    </div>
+
+  </div><!-- end slide-container -->
+
+  <script src="script.js"></script>
+</body>
+</html>
