@@ -88,22 +88,23 @@
 
       <div class="tv-wrap">
         <div class="tv-frame">
-          <div class="tv-screen">
-            <div id="yt-player-wrap">
-              <iframe
-                id="yt-iframe"
-                src="https://www.youtube.com/embed/ERywBkTnrvI?enablejsapi=1&rel=0&modestbranding=1&playsinline=1"
-                title="Orpheus - Vincent Lima"
-                frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowfullscreen>
-              </iframe>
-            </div>
+          <div class="tv-screen" id="tv-screen-wrap">
+            <!-- YouTube thumbnail with play overlay — opens YT directly (embedding disabled on this video) -->
+            <a href="https://youtu.be/ERywBkTnrvI" target="_blank" rel="noopener" class="yt-thumb-link" id="yt-thumb-link" aria-label="Play Orpheus by Vincent Lima on YouTube">
+              <img
+                src="https://img.youtube.com/vi/ERywBkTnrvI/hqdefault.jpg"
+                alt="Orpheus - Vincent Lima"
+                class="yt-thumb-img"
+                id="yt-thumb-img"
+              />
+              <div class="yt-play-overlay">
+                <div class="yt-play-btn-big">▶</div>
+              </div>
+            </a>
           </div>
           <div class="tv-label">Orpheus — Vincent Lima</div>
           <div class="tv-controls">
-            <button class="tv-btn" id="tv-restart" aria-label="Restart">↺</button>
-            <button class="tv-btn tv-btn-play" id="tv-play" aria-label="Play/Pause">▶</button>
+            <div class="tv-btn" aria-hidden="true">♫</div>
           </div>
           <div class="tv-speaker-dots" aria-hidden="true">
             <span></span><span></span><span></span><span></span><span></span>
@@ -115,7 +116,7 @@
         <div class="tv-guitar" aria-hidden="true">🪗</div>
       </div>
 
-      <p class="tv-hint">Tap the buttons to Play/Pause!</p>
+      <p class="tv-hint">Tap the screen to open on YouTube ♥</p>
       <button class="slide-next-btn" data-next="2">Continue →</button>
     </div>
 
