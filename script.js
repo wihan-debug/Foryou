@@ -9,12 +9,12 @@
    6 curated photos with their captions
 ─────────────────────────────────── */
 const POLAROIDS = [
-  { file: 'IMG-20260705-WA0172.jpeg',  caption: 'my safe place' },
-  { file: 'IMG-20260705-WA0165.jpeg',  caption: 'little moments' },
-  { file: 'IMG-20260705-WA0167.jpeg',  caption: 'favorite nights' },
-  { file: 'IMG-20260705-WA0164.jpeg',  caption: 'home is you' },
-  { file: 'IMG-20260705-WA0166.jpeg',  caption: 'my happiness' },
-  { file: 'IMG_20260705_140250.jpg',   caption: 'my whole world' },
+  { file: 'my safe place.jpeg',   caption: 'my safe place' },
+  { file: 'little moments.jpeg',  caption: 'little moments' },
+  { file: 'favorite night.jpeg',  caption: 'favorite nights' },
+  { file: 'home is you.jpeg',     caption: 'home is you' },
+  { file: 'my happiness.jpeg',    caption: 'my happiness' },
+  { file: 'my whole world.jpeg',  caption: 'my whole world' },
 ];
 
 /* ───────────────────────────────────
